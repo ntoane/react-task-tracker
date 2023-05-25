@@ -4,6 +4,7 @@ import Tasks from "./components/Tasks";
 import AddTask from "./components/AddTask";
 
 function App() {
+  const [showAddTask, setShowAddTask] = useState(false)
   const [tasks, setTasks] = useState([
     {
       "id": 1,
@@ -55,8 +56,10 @@ function App() {
 
   return (
     <div className="container">
-      <Header title="Task Tracker" />
-      <AddTask onAdd={addTask} />
+      {/* Set showAddTask to whatever opposit value, onAdd will passed to Header as a prop*/}
+      <Header title="Task Tracker" onAdd={() => setShowAddTask(!showAddTask)} showAdd={showAddTask} />
+      {/* Short way to do ternary operator without else */}
+      {showAddTask == true && <AddTask onAdd={addTask} />}
       {/* Wrap Task component in Ternary Operator to show Tasks component if 
         tasks are available, else show No tasks message */}
       {tasks.length > 0 ? (
