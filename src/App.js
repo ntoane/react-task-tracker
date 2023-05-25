@@ -43,10 +43,20 @@ function App() {
     // tasks.map((task) => task.id == id ? console.log(task.reminder) : '')
   }
 
+  // Add Task
+  const addTask = (task) => {
+    // Generate random id
+    const id = Math.floor(Math.random() * 1000) + 1
+    // create new task from id and copying all from tsk
+    const newTask = { id, ...task }
+    // Set a new task by copying(using spread operator) existing tasks and add new task
+    setTasks([...tasks, newTask])
+  }
+
   return (
     <div className="container">
       <Header title="Task Tracker" />
-      <AddTask />
+      <AddTask onAdd={addTask} />
       {/* Wrap Task component in Ternary Operator to show Tasks component if 
         tasks are available, else show No tasks message */}
       {tasks.length > 0 ? (
