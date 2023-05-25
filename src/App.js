@@ -1,6 +1,7 @@
 import Header from "./components/Header";
 import { useState } from 'react'
 import Tasks from "./components/Tasks";
+import AddTask from "./components/AddTask";
 
 function App() {
   const [tasks, setTasks] = useState([
@@ -45,6 +46,7 @@ function App() {
   return (
     <div className="container">
       <Header title="Task Tracker" />
+      <AddTask />
       {/* Wrap Task component in Ternary Operator to show Tasks component if 
         tasks are available, else show No tasks message */}
       {tasks.length > 0 ? (
