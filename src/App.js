@@ -1,30 +1,29 @@
 import Header from "./components/Header";
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Tasks from "./components/Tasks";
 import AddTask from "./components/AddTask";
 
 function App() {
   const [showAddTask, setShowAddTask] = useState(false)
-  const [tasks, setTasks] = useState([
-    {
-      "id": 1,
-      "text": "Doctors Appointment",
-      "day": "Feb 5th at 2:30pm",
-      "reminder": true
-    },
-    {
-      "id": 2,
-      "text": "Meeting at School",
-      "day": "Feb 6th at 1:30pm",
-      "reminder": true
-    },
-    {
-      "id": 3,
-      "text": "Meeting at church",
-      "day": "Feb 6th at 6:30pm",
-      "reminder": false
+  const [tasks, setTasks] = useState([])
+
+  // Fetch Tasks by Creating async function
+  const fetchTasks = async () => {
+    const res = await fetch('http://localhost:5000/tasks')
+    const data = await res.json()
+
+    return data
+  }
+
+  useEffect(() => {
+    const getTasks = async () => {
+      const tasksFromServer = await fetchTasks()
+      // Set Tasks from the server here
+      setTasks(tasksFromServer)
     }
-  ])
+
+    getTasks()
+  }, []) // Dependency array: If you have a value in function arguments that you want to run if it changes, now put [] 
 
   // Delete a task
   const deleteTask = (id) => {
