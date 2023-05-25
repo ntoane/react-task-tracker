@@ -13,10 +13,10 @@
       "reminder": true
     },
     {
-      "id": 3,
-      "text": "Meeting at church",
-      "day": "Feb 6th at 6:30pm",
-      "reminder": false
+      "text": "Go to church",
+      "day": "March 15th at 5:30pm",
+      "reminder": false,
+      "id": 3
     }
   ]
 }

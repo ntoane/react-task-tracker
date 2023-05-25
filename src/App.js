@@ -15,6 +15,14 @@ function App() {
     return data
   }
 
+    // Fetch a single Tasks
+    const fetchTask = async (id) => {
+      const res = await fetch(`http://localhost:5000/tasks/${id}`)
+      const data = await res.json()
+  
+      return data
+    }
+
   useEffect(() => {
     const getTasks = async () => {
       const tasksFromServer = await fetchTasks()
@@ -26,17 +34,37 @@ function App() {
   }, []) // Dependency array: If you have a value in function arguments that you want to run if it changes, now put [] 
 
   // Delete a task
-  const deleteTask = (id) => {
+  const deleteTask = async (id) => {
     //console.log('Delete task', id)
     // To delete a tasks, deal with mutable state
     // Do a temporary Delete by filtering out tasks not having this id
+
+    await fetch(`http://localhost:5000/tasks/${id}`, {
+      method: 'DELETE',
+    })
+
     setTasks(tasks.filter((task) => task.id != id))
   }
 
-  const toggleReminder = (id) => {
+  const toggleReminder = async (id) => {
+    // Get the task to update and change its reminder
+    const taskToToggle = await fetchTask(id)
+    const updatedTask = { ...taskToToggle, reminder: !taskToToggle.reminder }
+
+    // Update the task by id
+    const res = await fetch(`http://localhost:5000/tasks/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(updatedTask)
+    })
+
+    const data = await res.json()
+
     setTasks(
       tasks.map((task) =>
-        task.id == id ? { ...task, reminder: !task.reminder } : task
+        task.id == id ? { ...task, reminder: data.reminder } : task
       )
     )
     // console.log('toggled: ', id)
@@ -44,13 +72,26 @@ function App() {
   }
 
   // Add Task
-  const addTask = (task) => {
+  const addTask = async (task) => {
     // Generate random id
-    const id = Math.floor(Math.random() * 1000) + 1
+    // const id = Math.floor(Math.random() * 1000) + 1
     // create new task from id and copying all from tsk
-    const newTask = { id, ...task }
+    // const newTask = { id, ...task }
     // Set a new task by copying(using spread operator) existing tasks and add new task
-    setTasks([...tasks, newTask])
+    // setTasks([...tasks, newTask])
+
+    // New addTask via API
+    const res = await fetch('http://localhost:5000/tasks', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(task)
+    })
+
+    const newData = await res.json()
+
+    setTasks([...tasks, newData])
   }
 
   return (
