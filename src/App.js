@@ -1,7 +1,10 @@
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Header from "./components/Header";
 import { useState, useEffect } from 'react'
 import Tasks from "./components/Tasks";
 import AddTask from "./components/AddTask";
+import Footer from "./components/Footer";
+import About from "./components/About";
 
 function App() {
   const [showAddTask, setShowAddTask] = useState(false)
@@ -15,13 +18,13 @@ function App() {
     return data
   }
 
-    // Fetch a single Tasks
-    const fetchTask = async (id) => {
-      const res = await fetch(`http://localhost:5000/tasks/${id}`)
-      const data = await res.json()
-  
-      return data
-    }
+  // Fetch a single Tasks
+  const fetchTask = async (id) => {
+    const res = await fetch(`http://localhost:5000/tasks/${id}`)
+    const data = await res.json()
+
+    return data
+  }
 
   useEffect(() => {
     const getTasks = async () => {
@@ -95,19 +98,32 @@ function App() {
   }
 
   return (
-    <div className="container">
-      {/* Set showAddTask to whatever opposit value, onAdd will passed to Header as a prop*/}
-      <Header title="Task Tracker" onAdd={() => setShowAddTask(!showAddTask)} showAdd={showAddTask} />
-      {/* Short way to do ternary operator without else */}
-      {showAddTask == true && <AddTask onAdd={addTask} />}
-      {/* Wrap Task component in Ternary Operator to show Tasks component if 
-        tasks are available, else show No tasks message */}
-      {tasks.length > 0 ? (
-        <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder} />
-      ) : (
-        'No tasks to show'
-      )}
-    </div>
+    <Router>
+      <div className="container">
+        {/* Set showAddTask to whatever opposit value, onAdd will passed to Header as a prop*/}
+        <Header title="Task Tracker" onAdd={() => setShowAddTask(!showAddTask)} showAdd={showAddTask} />
+
+        <Routes>
+          <Route
+            path='/'
+            element={
+              <>
+                {/* Short way to do ternary operator without else */}
+                {showAddTask == true && <AddTask onAdd={addTask} />}
+                {/* Wrap Task component in Ternary Operator to show Tasks component if tasks are available, else show No tasks message */}
+                {tasks.length > 0 ? (
+                  <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder} />
+                ) : (
+                  'No tasks to show'
+                )}
+              </>
+            }
+          />
+          <Route path='/about' element={<About />} />
+        </Routes>
+        <Footer />
+      </div>
+    </Router>
   );
 }
 

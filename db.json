@@ -13,8 +13,8 @@
       "reminder": true
     },
     {
-      "text": "Go to church",
-      "day": "March 15th at 5:30pm",
+      "text": "Gym",
+      "day": "Feb 7th at 5am",
       "reminder": false,
       "id": 3
     }
