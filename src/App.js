@@ -35,7 +35,13 @@ function App() {
   return (
     <div className="container">
       <Header title="Task Tracker" />
-      <Tasks tasks={tasks} onDelete={deleteTask} />
+      {/* Wrap Task component in Ternary Operator to show Tasks component if 
+        tasks are available, else show No tasks message */}
+      {tasks.length > 0 ? (
+        <Tasks tasks={tasks} onDelete={deleteTask} />
+      ) : (
+        'No tasks to show'
+      )}
     </div>
   );
 }
