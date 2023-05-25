@@ -24,10 +24,18 @@ function App() {
     }
   ])
 
+  // Delete a task
+  const deleteTask = (id) => {
+    //console.log('Delete task', id)
+    // To delete a tasks, deal with mutable state
+    // Do a temporary Delete by filtering out tasks not having this id
+    setTasks(tasks.filter((task) => task.id != id))
+  }
+
   return (
     <div className="container">
       <Header title="Task Tracker" />
-      <Tasks tasks={tasks} />
+      <Tasks tasks={tasks} onDelete={deleteTask} />
     </div>
   );
 }
