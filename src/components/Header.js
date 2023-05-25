@@ -1,9 +1,14 @@
-import React from 'react'
+import Button from './Button'
 
-const Header = () => {
+const Header = ({ title }) => {
+const onClick = () => {
+    console.log('Header click')
+}
+
   return (
-    <div>
-      <h1>Header</h1>
+    <div className='header'>
+      <h1>{title}</h1>
+      <Button color='green' text='Hello' onClick={onClick} />
     </div>
   )
 }
